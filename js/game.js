@@ -17,13 +17,13 @@ const Game = (function() {
                 cellCount: 15,
                 generationCount: 3,
                 ruleSet: { "111": 0, "110": 1, "101": 1, "100": 0, "011": 1, "010": 0, "001": 0, "000": 1 },
-                targetPattern: [0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1]
+                inputPattern: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
             },
             {
                 cellCount: 21,
                 generationCount: 4,
                 ruleSet: { "111": 1, "110": 0, "101": 0, "100": 1, "011": 0, "010": 1, "001": 1, "000": 0 },
-                targetPattern: [1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0]
+                inputPattern: [1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1]
             }
             // Add more levels as needed
         ]
@@ -55,7 +55,14 @@ const Game = (function() {
         state.cellCount = levelData.cellCount;
         state.generationCount = levelData.generationCount;
         state.currentRuleSet = levelData.ruleSet;
-        state.targetPattern = levelData.targetPattern;
+        state.inputPattern = [...levelData.inputPattern];
+        
+        // Compute the target pattern dynamically
+        state.targetPattern = Rules.evolvePattern(
+            state.inputPattern,
+            state.currentRuleSet,
+            state.generationCount
+        ).pop();
         
         resetGame();
         displayTargetPattern();
@@ -66,7 +73,7 @@ const Game = (function() {
      * Reset the game state
      */
     function resetGame() {
-        state.inputPattern = new Array(state.cellCount).fill(0);
+        state.inputPattern = new Array(state.cellCount).fill(0); // Start with a blank input pattern
         state.evolutionHistory = [];
         elements.evolutionContainer.style.display = 'none';
         elements.feedbackElement.textContent = '';
