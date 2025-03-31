@@ -12,7 +12,21 @@ const Game = (function() {
         targetPattern: [],
         evolutionHistory: [],
         currentLevel: 1,
-        difficulty: "easy"
+        levels: [
+            {
+                cellCount: 15,
+                generationCount: 3,
+                ruleSet: { "111": 0, "110": 1, "101": 1, "100": 0, "011": 1, "010": 0, "001": 0, "000": 1 },
+                targetPattern: [0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1]
+            },
+            {
+                cellCount: 21,
+                generationCount: 4,
+                ruleSet: { "111": 1, "110": 0, "101": 0, "100": 1, "011": 0, "010": 1, "001": 1, "000": 0 },
+                targetPattern: [1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0]
+            }
+            // Add more levels as needed
+        ]
     };
     
     // DOM elements
@@ -24,31 +38,28 @@ const Game = (function() {
      */
     function init(domElements) {
         elements = domElements;
-        updateDifficulty();
-        resetGame();
-        generatePuzzle();
+        loadLevel(state.currentLevel);
     }
     
     /**
-     * Update difficulty settings
+     * Load a specific level
+     * @param {number} level - The level to load
      */
-    function updateDifficulty() {
-        state.difficulty = elements.difficultySelect.value;
-        
-        switch(state.difficulty) {
-            case "easy":
-                state.cellCount = 15;
-                state.generationCount = 3;
-                break;
-            case "medium":
-                state.cellCount = 21;
-                state.generationCount = 4;
-                break;
-            case "hard":
-                state.cellCount = 31;
-                state.generationCount = 5;
-                break;
+    function loadLevel(level) {
+        const levelData = state.levels[level - 1];
+        if (!levelData) {
+            console.error("Level data not found for level:", level);
+            return;
         }
+        
+        state.cellCount = levelData.cellCount;
+        state.generationCount = levelData.generationCount;
+        state.currentRuleSet = levelData.ruleSet;
+        state.targetPattern = levelData.targetPattern;
+        
+        resetGame();
+        displayTargetPattern();
+        displayRules();
     }
     
     /**
@@ -70,27 +81,6 @@ const Game = (function() {
             cell.addEventListener('click', () => toggleCell(cell));
             elements.inputCellsContainer.appendChild(cell);
         }
-    }
-    
-    /**
-     * Generate a new puzzle
-     */
-    function generatePuzzle() {
-        // Generate random rule set based on difficulty
-        state.currentRuleSet = Rules.generateRuleSet(state.difficulty);
-        
-        // Generate random input pattern
-        const randomInput = Rules.generateRandomPattern(state.cellCount);
-        
-        // Evolve the random input to get a target
-        const history = Rules.evolvePattern(randomInput, state.currentRuleSet, state.generationCount);
-        state.targetPattern = history[history.length - 1];
-        
-        // Display target pattern
-        displayTargetPattern();
-        
-        // Display rules (hidden initially)
-        displayRules();
     }
     
     /**
@@ -209,6 +199,7 @@ const Game = (function() {
             elements.feedbackElement.className = 'feedback success';
             state.currentLevel++;
             elements.levelElement.textContent = state.currentLevel;
+            loadLevel(state.currentLevel);
         } else {
             elements.feedbackElement.textContent = "Not quite. Try a different pattern.";
             elements.feedbackElement.className = 'feedback failure';
@@ -229,18 +220,16 @@ const Game = (function() {
     function resetLevel() {
         state.currentLevel = 1;
         elements.levelElement.textContent = state.currentLevel;
-        resetGame();
-        generatePuzzle();
+        loadLevel(state.currentLevel);
     }
     
     // Public API
     return {
         init,
-        updateDifficulty,
         resetGame,
-        generatePuzzle,
         evolvePattern,
         toggleRulesDisplay,
-        resetLevel
+        resetLevel,
+        loadLevel
     };
 })();

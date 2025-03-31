@@ -3,13 +3,6 @@
  * Handles rule generation and pattern evolution
  */
 const Rules = (function() {
-    // Rule presets by difficulty
-    const RULE_OPTIONS = {
-        easy: [30, 90, 110],
-        medium: [54, 73, 22],
-        hard: [45, 105, 150]
-    };
-
     /**
      * Converts a Wolfram rule number (0-255) to a ruleset object
      * @param {number} ruleNumber - The rule number to convert
@@ -23,17 +16,6 @@ const Rules = (function() {
             ruleSet[neighborhood] = nextState;
         }
         return ruleSet;
-    }
-
-    /**
-     * Generates a random ruleset based on difficulty
-     * @param {string} difficulty - The difficulty level (easy, medium, hard)
-     * @return {object} A randomly selected ruleset
-     */
-    function generateRuleSet(difficulty) {
-        const options = RULE_OPTIONS[difficulty] || RULE_OPTIONS.easy;
-        const ruleNumber = options[Math.floor(Math.random() * options.length)];
-        return numberToRuleSet(ruleNumber);
     }
 
     /**
@@ -76,29 +58,10 @@ const Rules = (function() {
         return history;
     }
 
-    /**
-     * Generates a random pattern of a given length
-     * @param {number} length - The length of the pattern
-     * @return {Array} A random binary pattern
-     */
-    function generateRandomPattern(length) {
-        const pattern = new Array(length).fill(0);
-        const activeCells = Math.floor(length / 3);
-        
-        for (let i = 0; i < activeCells; i++) {
-            const randomIndex = Math.floor(Math.random() * length);
-            pattern[randomIndex] = 1;
-        }
-        
-        return pattern;
-    }
-
     // Public API
     return {
         numberToRuleSet,
-        generateRuleSet,
         evolveGeneration,
-        evolvePattern,
-        generateRandomPattern
+        evolvePattern
     };
 })();

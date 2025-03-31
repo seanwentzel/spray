@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
         evolutionCellsContainer: document.getElementById('evolution-cells'),
         feedbackElement: document.getElementById('feedback'),
         levelElement: document.getElementById('level'),
-        difficultySelect: document.getElementById('difficulty'),
         rulesDisplay: document.getElementById('rules-display'),
         rulesContainer: document.getElementById('rules-container'),
         evolveBtn: document.getElementById('evolve-btn'),
@@ -29,14 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
     domElements.resetBtn.addEventListener('click', Game.resetGame);
     
     domElements.newPuzzleBtn.addEventListener('click', function() {
-        Game.resetGame();
-        Game.generatePuzzle();
+        Game.resetLevel();
     });
     
     domElements.revealRulesBtn.addEventListener('click', Game.toggleRulesDisplay);
-    
-    domElements.difficultySelect.addEventListener('change', function() {
-        Game.updateDifficulty();
-        Game.resetLevel();
-    });
 });
