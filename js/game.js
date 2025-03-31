@@ -136,19 +136,31 @@ const Game = (function() {
     function displayEvolution() {
         elements.evolutionContainer.style.display = 'block';
         elements.evolutionCellsContainer.innerHTML = '';
-        
+        elements.indicatorRow.innerHTML = ''; // Clear indicators
+
         for (let gen = state.evolutionHistory.length - 1; gen >= 1; gen--) {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'cell-row';
-            
+
             for (let i = 0; i < state.cellCount; i++) {
                 const cell = document.createElement('div');
                 cell.className = state.evolutionHistory[gen][i] === 1 ? 'cell active' : 'cell';
                 rowDiv.appendChild(cell);
             }
-            
+
             elements.evolutionCellsContainer.appendChild(rowDiv);
         }
+
+        // Add indicators for the final generation
+        const finalGen = state.evolutionHistory[state.evolutionHistory.length - 1];
+        finalGen.forEach((value, i) => {
+            const indicator = document.createElement('div');
+            indicator.className = 'correct-indicator ' + 
+                (value === state.targetPattern[i] ? 'correct' : 'incorrect');
+            elements.indicatorRow.appendChild(indicator);
+        });
+
+        elements.indicatorRow.style.display = 'flex'; // Ensure the row is visible
     }
     
     /**
@@ -172,7 +184,6 @@ const Game = (function() {
             elements.levelElement.textContent = state.currentLevel;
             loadLevel(state.currentLevel);
         } else {
-            elements.feedbackElement.textContent = "Not quite. Try a different pattern.";
             elements.feedbackElement.className = 'feedback failure';
         }
     }

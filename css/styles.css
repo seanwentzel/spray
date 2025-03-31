@@ -151,6 +151,32 @@ select {
     margin-left: 10px;
 }
 
+.correct-indicator {
+    width: 30px; /* Match the width of the cells */
+    height: 30px; /* Match the height of the cells */
+    display: inline-block;
+    border: 1px solid #ccc; /* Match the border of the cells */
+    margin: 2px; /* Match the margin of the cells */
+    box-sizing: border-box; /* Ensure consistent sizing */
+}
+
+.correct-indicator.correct {
+    background-color: #4CAF50; /* Green for correct */
+}
+
+.correct-indicator.incorrect {
+    background-color: #f44336; /* Red for incorrect */
+}
+
+.indicator-row {
+    display: flex;
+    justify-content: center; /* Align with the cell rows */
+    gap: 2px; /* Match the spacing between cells */
+    margin: 5px 0;
+    width: auto; /* Remove fixed width to align dynamically */
+    padding: 0; /* Ensure no extra padding */
+}
+
 /* Media queries for responsive design */
 @media (max-width: 600px) {
     .cell {

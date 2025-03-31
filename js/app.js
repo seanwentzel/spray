@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
         evolveBtn: document.getElementById('evolve-btn'),
         resetBtn: document.getElementById('reset-btn'),
         newPuzzleBtn: document.getElementById('new-puzzle-btn'),
-        revealRulesBtn: document.getElementById('reveal-rules-btn')
+        revealRulesBtn: document.getElementById('reveal-rules-btn'),
+        indicatorRow: document.getElementById('indicator-row') // Added this line
     };
     
     // Initialize game
