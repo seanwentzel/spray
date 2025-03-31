@@ -22,14 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize game
     Game.init(domElements);
     
-    // Add event listeners
+    // Add event listener for the "Evolve" button
     domElements.evolveBtn.addEventListener('click', Game.evolvePattern);
-    
-    domElements.resetBtn.addEventListener('click', Game.resetGame);
-    
-    domElements.newPuzzleBtn.addEventListener('click', function() {
-        Game.resetLevel();
-    });
-    
-    domElements.revealRulesBtn.addEventListener('click', Game.toggleRulesDisplay);
 });

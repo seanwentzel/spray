@@ -66,7 +66,6 @@ const Game = (function() {
         
         resetGame();
         displayTargetPattern();
-        displayRules();
     }
     
     /**
@@ -99,41 +98,6 @@ const Game = (function() {
             const cell = document.createElement('div');
             cell.className = state.targetPattern[i] === 1 ? 'cell active' : 'cell';
             elements.targetCellsContainer.appendChild(cell);
-        }
-    }
-    
-    /**
-     * Display the ruleset (for reveal)
-     */
-    function displayRules() {
-        elements.rulesContainer.innerHTML = '';
-        
-        for (const [neighborhood, result] of Object.entries(state.currentRuleSet)) {
-            const ruleElement = document.createElement('div');
-            ruleElement.className = 'rule';
-            
-            const ruleCellsDiv = document.createElement('div');
-            ruleCellsDiv.className = 'rule-cells';
-            
-            // Convert binary string to array of cells
-            for (let i = 0; i < neighborhood.length; i++) {
-                const cell = document.createElement('div');
-                cell.className = neighborhood[i] === '1' ? 'rule-cell active' : 'rule-cell';
-                ruleCellsDiv.appendChild(cell);
-            }
-            
-            const arrowSpan = document.createElement('span');
-            arrowSpan.className = 'arrow';
-            arrowSpan.textContent = '→';
-            
-            const resultCell = document.createElement('div');
-            resultCell.className = result === 1 ? 'result-cell active' : 'result-cell';
-            
-            ruleElement.appendChild(ruleCellsDiv);
-            ruleElement.appendChild(arrowSpan);
-            ruleElement.appendChild(resultCell);
-            
-            elements.rulesContainer.appendChild(ruleElement);
         }
     }
     
@@ -213,30 +177,10 @@ const Game = (function() {
         }
     }
     
-    /**
-     * Toggle rule display visibility
-     */
-    function toggleRulesDisplay() {
-        elements.rulesDisplay.style.display = 
-            elements.rulesDisplay.style.display === 'none' ? 'block' : 'none';
-    }
-    
-    /**
-     * Reset level counter and generate new puzzle
-     */
-    function resetLevel() {
-        state.currentLevel = 1;
-        elements.levelElement.textContent = state.currentLevel;
-        loadLevel(state.currentLevel);
-    }
-    
     // Public API
     return {
         init,
-        resetGame,
         evolvePattern,
-        toggleRulesDisplay,
-        resetLevel,
         loadLevel
     };
 })();
