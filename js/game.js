@@ -173,7 +173,7 @@ const Game = (function() {
         elements.evolutionContainer.style.display = 'block';
         elements.evolutionCellsContainer.innerHTML = '';
         
-        for (let gen = 0; gen < state.evolutionHistory.length; gen++) {
+        for (let gen = state.evolutionHistory.length - 1; gen >= 1; gen--) {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'cell-row';
             
